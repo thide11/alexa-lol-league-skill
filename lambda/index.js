@@ -14,7 +14,7 @@ const LaunchRequestHandler = {
     handle(handlerInput) {
 
         const pictureUrl = Util.getS3PreSignedUrl("Media/gemidao.mp3").replace(/&/g,'&amp;');
-        const speakOutput = `<audio src="${pictureUrl}"/> HAHA, trolei!`;
+        const speakOutput = `<audio src="${pictureUrl}"/> <say-as interpret-as="interjection">calma</say-as>. Você foi <emphasis level="strong">trolado</emphasis>`;
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
