@@ -15,9 +15,31 @@ const LaunchRequestHandler = {
 
         const pictureUrl = Util.getS3PreSignedUrl("Media/gemidao.mp3").replace(/&/g,'&amp;');
         const speakOutput = `<audio src="${pictureUrl}"/> <say-as interpret-as="interjection">calma</say-as>. Você foi <emphasis level="strong">trolado</emphasis>`;
+        const anotherSpeakOutput = `
+    Poema do cume
+    
+    No alto daquele cume.
+    Plantei uma roseira.
+    O vento no cume bate.
+    A rosa no cume cheira.
+    
+    Quando vem a chuva fina.
+    Salpicos no cume caem.
+    Formigas no cume entram.
+    Abelhas do cume saem.
+    
+    Quando cai a chuva grossa.
+    A água do cume desce.
+    O barro do cume escorre.
+    O mato no cume cresce.
+    
+    Então, quando cessa a chuva.
+    No cume volta a alegria.
+    Pois torna a brilhar de novo.
+    O Sol que no cume ardia.`;
 
         return handlerInput.responseBuilder
-            .speak(speakOutput)
+            .speak(anotherSpeakOutput)
             .getResponse();
             //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
         
