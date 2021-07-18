@@ -4,6 +4,7 @@
  * session persistence, api calls, and more.
  * */
 const Alexa = require('ask-sdk-core');
+const axios = require('axios');
 const Util = require('./util.js');
 
 const LaunchRequestHandler = {
@@ -11,9 +12,9 @@ const LaunchRequestHandler = {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
     },
     handle(handlerInput) {
-        
+
         const pictureUrl = Util.getS3PreSignedUrl("Media/gemidao.mp3").replace(/&/g,'&amp;');
-        const speakOutput = `Olá! Acessando a sua carteira do easyinvest <audio src="${pictureUrl}"/>`;
+        const speakOutput = `<audio src="${pictureUrl}"/> HAHA, trolei!`;
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
