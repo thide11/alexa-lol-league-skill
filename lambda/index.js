@@ -4,6 +4,7 @@
  * session persistence, api calls, and more.
  * */
 const Alexa = require('ask-sdk-core');
+const Util = require('./util.js');
 
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
@@ -11,7 +12,8 @@ const LaunchRequestHandler = {
     },
     handle(handlerInput) {
         
-        const speakOutput = 'Olá! Acessando a sua carteira do easyinvest <audio src="https://protettordelinks.com/wp-content/baixar/gemido_trollante_do_whatsapp_toquesengracadosmp3.com.mp3"/>';
+        const pictureUrl = Util.getS3PreSignedUrl("Media/gemidao.mp3").replace(/&/g,'&amp;');
+        const speakOutput = `Olá! Acessando a sua carteira do easyinvest <audio src="${pictureUrl}"/>`;
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
