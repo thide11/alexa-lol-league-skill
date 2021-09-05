@@ -37,9 +37,10 @@ const LaunchRequestHandler = {
     No cume volta a alegria.
     Pois torna a brilhar de novo.
     O Sol que no cume ardia.`;
+    const speaker3 = "A vai ti toma no cu rapa"
 
         return handlerInput.responseBuilder
-            .speak(anotherSpeakOutput)
+            .speak(speaker3)
             .getResponse();
             //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
         
