@@ -91,7 +91,7 @@ async function fetchMyEloToMessage() {
       const matchData = await riotApi.getMatch(accountId);
       const rankedSolo = matchData.find((e) => e.queueType == "RANKED_SOLO_5x5");
       const message = `Você está no ${eloToPortuguese[rankedSolo.tier]} ${rankedSolo.rank}, com ${rankedSolo.leaguePoints} de PDL`;
-      console.log(mensagem);
+      console.log(message);
       return message
 }
 
