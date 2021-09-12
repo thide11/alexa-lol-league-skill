@@ -53,7 +53,7 @@ const LaunchRequestHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
     },
-    handle(handlerInput) {
+    async handle(handlerInput) {
 
         const pictureUrl = Util.getS3PreSignedUrl("Media/gemidao.mp3").replace(/&/g,'&amp;');
         const speakOutput = `<audio src="${pictureUrl}"/> <say-as interpret-as="interjection">calma</say-as>. Você foi <emphasis level="strong">trolado</emphasis>`;
@@ -80,9 +80,11 @@ const LaunchRequestHandler = {
     Pois torna a brilhar de novo.
     O Sol que no cume ardia.`;
     const speaker3 = "A vai ti toma no cu rapa"
+    
+        const eloMessage = await fetchMyEloToMessage();
 
         return handlerInput.responseBuilder
-            .speak(speaker3)
+            .speak(eloMessage)
             .getResponse();
             //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
         
