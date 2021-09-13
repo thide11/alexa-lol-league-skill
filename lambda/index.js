@@ -7,26 +7,6 @@ const Alexa = require('ask-sdk-core');
 const axios = require('axios');
 const Util = require('./util.js');
 
-const nickname = "thide11"
-const apiKey = "RGAPI-183dc70a-26bb-4d69-ae26-f2f62c4e4d67"
-
-const riotApi = function () {
-  const baseUrl = "https://br1.api.riotgames.com";
-
-  async function getSummonerData(nickname) {
-    const { data } = await axios.get(`${baseUrl}/lol/summoner/v4/summoners/by-name/${nickname}?api_key=${apiKey}`)
-    return data;
-  }
-  async function getMatch(accountId) {
-    const { data } = await axios.get(`${baseUrl}/lol/league/v4/entries/by-summoner/${accountId}?api_key=${apiKey}`)
-    return data;
-  }
-  return {
-    getSummonerData,
-    getMatch,
-  }
-}();
-
 
 const eloToPortuguese = {
   "IRON": "FERRO",
@@ -40,20 +20,15 @@ const eloToPortuguese = {
   "CHALLANGER": "DESAFIANTE",
 }
 
-async function fetchMyEloToMessage() {
-    const accountId = (await riotApi.getSummonerData(nickname)).id;
-      const matchData = await riotApi.getMatch(accountId);
-      const rankedSolo = matchData.find((e) => e.queueType == "RANKED_SOLO_5x5");
-      const message = `Você está no ${eloToPortuguese[rankedSolo.tier]} ${rankedSolo.rank}, com ${rankedSolo.leaguePoints} de PDL`;
-      console.log(message);
-      return message
-}
-
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
     },
     async handle(handlerInput) {
+        const accessToken = handlerInput.requestEnvelope.context.System.user.accessToken;
+        
+        const rankedSolo = (await axios.get(`https://d807-2804-14d-4e83-4aac-8c85-ea5c-b491-5b7f.ngrok.io?jwt=${accessToken}`)).data
+        const eloMessage = `Você está no ${eloToPortuguese[rankedSolo.tier]} ${rankedSolo.rank}, com ${rankedSolo.leaguePoints} de PDL`;
 
         const pictureUrl = Util.getS3PreSignedUrl("Media/gemidao.mp3").replace(/&/g,'&amp;');
         const speakOutput = `<audio src="${pictureUrl}"/> <say-as interpret-as="interjection">calma</say-as>. Você foi <emphasis level="strong">trolado</emphasis>`;
