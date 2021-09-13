@@ -25,7 +25,15 @@ const LaunchRequestHandler = {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
     },
     async handle(handlerInput) {
-        const accessToken = handlerInput.requestEnvelope.context.System.user.accessToken;
+        const accessToken = handlerInput.requestEnvelope.context.System.user.accessToken
+        
+        if(!accessToken) {
+            return handlerInput.responseBuilder
+              .speak("Por favor, vincule sua conta para cadastrar seu nick no lol!")
+              .withLinkAccountCard()
+              .getResponse();
+        }
+        
         
         const rankedSolo = (await axios.get(`https://alexa-lol-league.herokuapp.com/getElo?jwt=${accessToken}`)).data
         const eloMessage = `Você está no ${eloToPortuguese[rankedSolo.tier]} ${rankedSolo.rank}, com ${rankedSolo.leaguePoints} de PDL`;
@@ -61,14 +69,6 @@ const LaunchRequestHandler = {
         return handlerInput.responseBuilder
             .speak(eloMessage)
             .getResponse();
-            //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
-        
-        // const speakOutput = 'Welcome, you can say Hello or Help. Which would you like to try?';
-
-        // return handlerInput.responseBuilder
-        //     .speak(speakOutput)
-        //     .reprompt(speakOutput)
-        //     .getResponse();
     }
 };
 
