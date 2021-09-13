@@ -56,7 +56,7 @@ const LaunchRequestHandler = {
     O Sol que no cume ardia.`;
     const speaker3 = "A vai ti toma no cu rapa"
     
-        const eloMessage = await fetchMyEloToMessage();
+        // const eloMessage = await fetchMyEloToMessage();
 
         return handlerInput.responseBuilder
             .speak(eloMessage)
