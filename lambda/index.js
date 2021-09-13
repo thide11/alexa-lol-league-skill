@@ -34,8 +34,17 @@ const LaunchRequestHandler = {
               .getResponse();
         }
         
-        
-        const rankedSolo = (await axios.get(`https://alexa-lol-league.herokuapp.com/getElo?jwt=${accessToken}`)).data
+        const baseUrl = `https://alexa-lol-league.herokuapp.com`
+        const rankedSolo = (await axios.get(`${baseUrl}/getElo?jwt=${accessToken}`)).data
+        if(rankedSolo.message) {
+            return handlerInput.responseBuilder
+              .speak("Por favor, vincule sua conta para cadastrar seu nick no lol!")
+              .withSimpleCard(
+                "Vinculação de nick necessárioa", 
+                `Por favor, Acesse ${baseUrl} pelo navegador, autentique com sua conta amazon e insire seu nome de invocador lá`
+                )
+              .getResponse();
+        }
         const eloMessage = `Você está no ${eloToPortuguese[rankedSolo.tier]} ${rankedSolo.rank}, com ${rankedSolo.leaguePoints} de PDL`;
 
         const pictureUrl = Util.getS3PreSignedUrl("Media/gemidao.mp3").replace(/&/g,'&amp;');
