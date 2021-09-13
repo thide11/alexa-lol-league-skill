@@ -27,7 +27,7 @@ const LaunchRequestHandler = {
     async handle(handlerInput) {
         const accessToken = handlerInput.requestEnvelope.context.System.user.accessToken;
         
-        const rankedSolo = (await axios.get(`https://d807-2804-14d-4e83-4aac-8c85-ea5c-b491-5b7f.ngrok.io/getElo?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJhbXpuMS5hY2NvdW50LkFITDc2U0xZSkRJSEZESU1VV0dXNEhLTVI1UEEiLCJpYXQiOjE2MzE1MTUxMTF9.gUwNDDZ4Hbag8aMuZfEguh_p9jtAWNv5g5jUxUVMK2g`)).data
+        const rankedSolo = (await axios.get(`https://d807-2804-14d-4e83-4aac-8c85-ea5c-b491-5b7f.ngrok.io/getElo?jwt=${accessToken}`)).data
         const eloMessage = `Você está no ${eloToPortuguese[rankedSolo.tier]} ${rankedSolo.rank}, com ${rankedSolo.leaguePoints} de PDL`;
 
         const pictureUrl = Util.getS3PreSignedUrl("Media/gemidao.mp3").replace(/&/g,'&amp;');
