@@ -38,11 +38,11 @@ const LaunchRequestHandler = {
         const rankedSolo = (await axios.get(`${baseUrl}/getElo?jwt=${accessToken}`)).data
         if(rankedSolo.message) {
             return handlerInput.responseBuilder
-              .speak("Por favor, vincule sua conta para cadastrar seu nick no lol!")
+              .speak("Cadastro de nickname do lol necessário, verifique o card adicionado no seu app")
               .withSimpleCard(
-                "Vinculação de nick necessárioa", 
+                "Vinculação de nick necessária",
                 `Por favor, Acesse ${baseUrl} pelo navegador, autentique com sua conta amazon e insire seu nome de invocador lá`
-                )
+              )
               .getResponse();
         }
         const eloMessage = `Você está no ${eloToPortuguese[rankedSolo.tier]} ${rankedSolo.rank}, com ${rankedSolo.leaguePoints} de PDL`;
