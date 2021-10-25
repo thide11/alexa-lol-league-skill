@@ -5,7 +5,6 @@
  * */
 const Alexa = require('ask-sdk-core');
 const axios = require('axios');
-const Util = require('./util.js');
 
 const i18next = require('i18next'); 
 const sprintf = require('i18next-sprintf-postprocessor'); 
@@ -49,6 +48,9 @@ const LaunchRequestHandler = {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
     },
     async handle(handlerInput) {
+        return handlerInput.responseBuilder
+            .speak("Teste")
+            .getResponse();
         const i18n = configurei18N(handlerInput.requestEnvelope.request.locale);
         const accessToken = handlerInput.requestEnvelope.context.System.user.accessToken
         
@@ -112,5 +114,5 @@ exports.handler = Alexa.SkillBuilders.custom()
         LaunchRequestHandler,)
     .addErrorHandlers(
         ErrorHandler)
-    .withCustomUserAgent('sample/hello-world/v1.2')
+    .withCustomUserAgent('v0.1')
     .lambda();
