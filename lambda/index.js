@@ -94,7 +94,8 @@ const ErrorHandler = {
         return true;
     },
     handle(handlerInput, error) {
-        const speakOutput = 'Sorry, I had trouble doing what you asked. Please try again.';
+        const i18n = configurei18N(handlerInput.requestEnvelope.request.locale);
+        const speakOutput = i18n.t("PROBLEM_MESSAGE");
         console.log(`~~~~ Error handled: ${JSON.stringify(error)}`);
 
         return handlerInput.responseBuilder

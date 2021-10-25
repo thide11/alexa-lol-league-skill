@@ -6,6 +6,7 @@ module.exports = {
         "NEED_NICKNAME_CARD_DESCRIPTION": "Por favor, Acesse %s pelo navegador, autentique com sua conta amazon e insire seu nome de invocador lá",
         "ELO_TEMPLATE": "Você está no %s %s, com %s de PDL",
         "UNRANKED_MESSAGE": "Você não tem elo na solo/duo",
+        "PROBLEM_MESSAGE": "Desculpe, estou com problema para processar o que você falou, por favor tente novamente mais tarde",
         "IRON": "FERRO",
         "BRONZE": "BRONZE",
         "SILVER": "PRATA",
