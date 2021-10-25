@@ -7,17 +7,12 @@ const Alexa = require('ask-sdk-core');
 const axios = require('axios');
 const Util = require('./util.js');
 
+const i18next = require('i18next'); 
+const sprintf = require('i18next-sprintf-postprocessor'); 
 
-const eloToPortuguese = {
-  "IRON": "FERRO",
-  "BRONZE": "BRONZE",
-  "SILVER": "PRATA",
-  "GOLD": "OURO",
-  "PLATINUM": "PLATINA",
-  "DIAMOND": "DIAMANTE",
-  "MASTER": "MESTRE",
-  "GRANDMASTER": "GRÃO MESTRE",
-  "CHALLANGER": "DESAFIANTE",
+const languageStrings = {
+    'en' : require('./i18n/en'),
+    'br' : require('./i18n/br'),
 }
 
 const LaunchRequestHandler = {
@@ -25,11 +20,37 @@ const LaunchRequestHandler = {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
     },
     async handle(handlerInput) {
+        const i18n = i18next.use(sprintf).init({
+            lng: handlerInput.requestEnvelope.request.locale,
+            fallbackLng: 'en', // fallback to EN if locale doesn't exist
+            resources: languageStrings
+        });
+    
+        i18n.t = function () {
+            const args = arguments;
+            let values = [];
+        
+            for (var i = 1; i < args.length; i++) {
+                values.push(args[i]);
+            }
+            const value = i18next.t(args[0], {
+                returnObjects: true,
+                postProcess: 'sprintf',
+                sprintf: values
+            });
+        
+            if (Array.isArray(value)) {
+                return value[Math.floor(Math.random() * value.length)];
+            } else {
+                return value;
+            }
+        }
+        
         const accessToken = handlerInput.requestEnvelope.context.System.user.accessToken
         
         if(!accessToken) {
             return handlerInput.responseBuilder
-              .speak("Por favor, vincule sua conta para cadastrar seu nick do lol!")
+              .speak(i18n.t("NEED_VINCULATION"))
               .withLinkAccountCard()
               .getResponse();
         }
@@ -38,14 +59,19 @@ const LaunchRequestHandler = {
         const rankedSolo = (await axios.get(`${baseUrl}/getElo?jwt=${accessToken}`)).data
         if(rankedSolo.message) {
             return handlerInput.responseBuilder
-              .speak("Cadastro de nickname do lol necessário, verifique o card adicionado no seu app da alexa")
+              .speak(i18n.t("NEED_NICKNAME_HEADER"))
               .withSimpleCard(
-                "Vinculação de nick necessária",
-                `Por favor, Acesse ${baseUrl} pelo navegador, autentique com sua conta amazon e insire seu nome de invocador lá`
+                i18n.t("NEED_NICKNAME_CARD_HEADER"),
+                i18n.t("NEED_NICKNAME_CARD_DESCRIPTION", baseUrl)
               )
               .getResponse();
         }
-        const eloMessage = `Você está no ${eloToPortuguese[rankedSolo.tier]} ${rankedSolo.rank}, com ${rankedSolo.leaguePoints} de PDL`;
+        let eloMessage;
+        if(rankedSolo == null) {
+            eloMessage = i18n.t("UNRANKED_MESSAGE")
+        } else {
+            eloMessage = i18n.t("ELO_TEMPLATE", i18n.t(rankedSolo.tier), rankedSolo.rank, rankedSolo.leaguePoints);
+        }
         return handlerInput.responseBuilder
             .speak(eloMessage)
             .getResponse();
