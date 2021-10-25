@@ -1,0 +1,38 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "qual é meu elo no league of legends",
+      "intents": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        },
+        {
+          "name": "Invocacao",
+          "slots": [],
+          "samples": [
+            "qual é meu elo no league of legends",
+            "qual é minha liga no league of legends",
+            "como está meu elo",
+            "como estou no league of legends",
+            "qual é meu elo no lol"
+          ]
+        }
+      ],
+      "types": []
+    }
+  },
+  "version": "11"
+}

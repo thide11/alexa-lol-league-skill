@@ -12,7 +12,36 @@ const sprintf = require('i18next-sprintf-postprocessor');
 
 const languageStrings = {
     'en' : require('./i18n/en'),
-    'br' : require('./i18n/br'),
+    'pt' : require('./i18n/pt'),
+}
+
+function configurei18N(locale) {
+    const i18n = i18next.use(sprintf).init({
+        lng: locale,
+        fallbackLng: 'en', // fallback to EN if locale doesn't exist
+        resources: languageStrings
+    });
+
+    i18n.t = function () {
+        const args = arguments;
+        let values = [];
+    
+        for (var i = 1; i < args.length; i++) {
+            values.push(args[i]);
+        }
+        const value = i18next.t(args[0], {
+            returnObjects: true,
+            postProcess: 'sprintf',
+            sprintf: values
+        });
+    
+        if (Array.isArray(value)) {
+            return value[Math.floor(Math.random() * value.length)];
+        } else {
+            return value;
+        }
+    }
+    return i18n;
 }
 
 const LaunchRequestHandler = {
@@ -20,32 +49,7 @@ const LaunchRequestHandler = {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
     },
     async handle(handlerInput) {
-        const i18n = i18next.use(sprintf).init({
-            lng: handlerInput.requestEnvelope.request.locale,
-            fallbackLng: 'en', // fallback to EN if locale doesn't exist
-            resources: languageStrings
-        });
-    
-        i18n.t = function () {
-            const args = arguments;
-            let values = [];
-        
-            for (var i = 1; i < args.length; i++) {
-                values.push(args[i]);
-            }
-            const value = i18next.t(args[0], {
-                returnObjects: true,
-                postProcess: 'sprintf',
-                sprintf: values
-            });
-        
-            if (Array.isArray(value)) {
-                return value[Math.floor(Math.random() * value.length)];
-            } else {
-                return value;
-            }
-        }
-        
+        const i18n = configurei18N(handlerInput.requestEnvelope.request.locale);
         const accessToken = handlerInput.requestEnvelope.context.System.user.accessToken
         
         if(!accessToken) {
@@ -56,7 +60,8 @@ const LaunchRequestHandler = {
         }
         
         const baseUrl = `https://alexa-lol-league.herokuapp.com`
-        const rankedSolo = (await axios.get(`${baseUrl}/getElo?jwt=${accessToken}`)).data
+        const getEloRequest = await axios.get(`${baseUrl}/getElo?jwt=${accessToken}`);
+        const rankedSolo = getEloRequest.data
         if(rankedSolo.message) {
             return handlerInput.responseBuilder
               .speak(i18n.t("NEED_NICKNAME_HEADER"))
