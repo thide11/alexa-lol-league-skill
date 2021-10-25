@@ -64,7 +64,7 @@ const LaunchRequestHandler = {
         const baseUrl = `https://alexa-lol-league.herokuapp.com`
         const getEloRequest = await axios.get(`${baseUrl}/getElo?jwt=${accessToken}`);
         const rankedSolo = getEloRequest.data
-        if(rankedSolo.message) {
+        if(rankedSolo != null && rankedSolo.message) {
             return handlerInput.responseBuilder
               .speak(i18n.t("NEED_NICKNAME_HEADER"))
               .withSimpleCard(
