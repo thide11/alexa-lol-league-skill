@@ -48,9 +48,9 @@ const LaunchRequestHandler = {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
     },
     async handle(handlerInput) {
-        return handlerInput.responseBuilder
-            .speak("Teste")
-            .getResponse();
+        // return handlerInput.responseBuilder
+        //     .speak("Teste")
+        //     .getResponse();
         const i18n = configurei18N(handlerInput.requestEnvelope.request.locale);
         const accessToken = handlerInput.requestEnvelope.context.System.user.accessToken
         
