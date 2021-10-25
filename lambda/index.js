@@ -97,7 +97,7 @@ const ErrorHandler = {
         const i18n = configurei18N(handlerInput.requestEnvelope.request.locale);
         const speakOutput = i18n.t("PROBLEM_MESSAGE");
         console.log(`~~~~ Error handled: ${JSON.stringify(error)}`);
-        throw error;
+        console.trace();
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
