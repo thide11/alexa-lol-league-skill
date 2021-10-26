@@ -15,6 +15,6 @@ module.exports = {
         "DIAMOND": "DIAMANTE",
         "MASTER": "MESTRE",
         "GRANDMASTER": "GRÃO MESTRE",
-        "CHALLANGER": "DESAFIANTE",
+        "CHALLENGER": "DESAFIANTE",
     }
 }

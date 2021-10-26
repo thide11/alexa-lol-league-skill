@@ -1,11 +1,5 @@
-/* *
- * This sample demonstrates handling intents from an Alexa skill using the Alexa Skills Kit SDK (v2).
- * Please visit https://alexa.design/cookbook for additional examples on implementing slots, dialog management,
- * session persistence, api calls, and more.
- * */
 const Alexa = require('ask-sdk-core');
 const axios = require('axios');
-
 const i18next = require('i18next'); 
 const sprintf = require('i18next-sprintf-postprocessor'); 
 
@@ -48,9 +42,6 @@ const LaunchRequestHandler = {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
     },
     async handle(handlerInput) {
-        // return handlerInput.responseBuilder
-        //     .speak("Teste")
-        //     .getResponse();
         const i18n = configurei18N(handlerInput.requestEnvelope.request.locale);
         const accessToken = handlerInput.requestEnvelope.context.System.user.accessToken
         
@@ -84,11 +75,7 @@ const LaunchRequestHandler = {
             .getResponse();
     }
 };
-/**
- * Generic error handling to capture any syntax or routing errors. If you receive an error
- * stating the request handler chain is not found, you have not implemented a handler for
- * the intent being invoked or included it in the skill builder below 
- * */
+
 const ErrorHandler = {
     canHandle() {
         return true;
@@ -97,7 +84,6 @@ const ErrorHandler = {
         const i18n = configurei18N(handlerInput.requestEnvelope.request.locale);
         const speakOutput = i18n.t("PROBLEM_MESSAGE");
         console.log(`~~~~ Error handled: ${JSON.stringify(error)}`);
-        console.trace();
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -106,15 +92,12 @@ const ErrorHandler = {
     }
 };
 
-/**
- * This handler acts as the entry point for your skill, routing all request and response
- * payloads to the handlers above. Make sure any new handlers or interceptors you've
- * defined are included below. The order matters - they're processed top to bottom 
- * */
 exports.handler = Alexa.SkillBuilders.custom()
     .addRequestHandlers(
-        LaunchRequestHandler,)
+        LaunchRequestHandler,
+    )
     .addErrorHandlers(
-        ErrorHandler)
-    .withCustomUserAgent('v0.1')
+        ErrorHandler
+    )
+    .withCustomUserAgent('v0.2')
     .lambda();

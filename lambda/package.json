@@ -15,5 +15,8 @@
     "axios": "",
     "i18next": "^21.3.3",
     "i18next-sprintf-postprocessor": "^0.2.2"
+  },
+  "devDependencies": {
+    "ask-sdk-local-debug": "^1.1.0"
   }
 }
