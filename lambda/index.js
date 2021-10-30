@@ -52,7 +52,7 @@ const LaunchRequestHandler = {
               .getResponse();
         }
         
-        const baseUrl = `https://alexa-lol-league.herokuapp.com`
+        const baseUrl = `https://lol-tier-browser.herokuapp.com`
         const getEloRequest = await axios.get(`${baseUrl}/getElo?jwt=${accessToken}`);
         const rankedSolo = getEloRequest.data
         if(rankedSolo != null && rankedSolo.message) {
