@@ -57,7 +57,7 @@ const LaunchRequestHandler = {
         const rankedSolo = getEloRequest.data
         if(rankedSolo != null && rankedSolo.message) {
             return handlerInput.responseBuilder
-              .speak(i18n.t("NEED_REGISTER_NICKNAME"), baseDomain)
+              .speak(i18n.t("NEED_REGISTER_NICKNAME", baseDomain))
               .getResponse();
         }
         let eloMessage;
