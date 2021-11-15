@@ -3,6 +3,8 @@ const axios = require('axios');
 const i18next = require('i18next'); 
 const sprintf = require('i18next-sprintf-postprocessor'); 
 
+const BASE_URL = "lolskill.games"
+
 const languageStrings = {
     'en' : require('./i18n/en'),
     'pt' : require('./i18n/pt'),
@@ -52,16 +54,12 @@ const LaunchRequestHandler = {
               .getResponse();
         }
         
-        const baseUrl = `https://lol-tier-browser.herokuapp.com`
+        const baseUrl = `https://${BASE_URL}`
         const getEloRequest = await axios.get(`${baseUrl}/getElo?jwt=${accessToken}`);
         const rankedSolo = getEloRequest.data
         if(rankedSolo != null && rankedSolo.message) {
             return handlerInput.responseBuilder
-              .speak(i18n.t("NEED_NICKNAME_HEADER"))
-              .withSimpleCard(
-                i18n.t("NEED_NICKNAME_CARD_HEADER"),
-                i18n.t("NEED_NICKNAME_CARD_DESCRIPTION", baseUrl)
-              )
+              .speak(i18n.t("NEED_REGISTER_NICKNAME"), BASE_URL)
               .getResponse();
         }
         let eloMessage;
@@ -99,5 +97,5 @@ exports.handler = Alexa.SkillBuilders.custom()
     .addErrorHandlers(
         ErrorHandler
     )
-    .withCustomUserAgent('v0.2')
+    .withCustomUserAgent('v0.3')
     .lambda();
