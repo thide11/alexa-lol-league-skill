@@ -2,9 +2,6 @@ const Alexa = require('ask-sdk-core');
 const axios = require('axios');
 const i18next = require('i18next'); 
 const sprintf = require('i18next-sprintf-postprocessor'); 
-
-const BASE_URL = "lolskill.games"
-
 const languageStrings = {
     'en' : require('./i18n/en'),
     'pt' : require('./i18n/pt'),
@@ -54,12 +51,13 @@ const LaunchRequestHandler = {
               .getResponse();
         }
         
-        const baseUrl = `https://${BASE_URL}`
+        const baseDomain = "lolskill.games"
+        const baseUrl = `https://${baseDomain}`
         const getEloRequest = await axios.get(`${baseUrl}/getElo?jwt=${accessToken}`);
         const rankedSolo = getEloRequest.data
         if(rankedSolo != null && rankedSolo.message) {
             return handlerInput.responseBuilder
-              .speak(i18n.t("NEED_REGISTER_NICKNAME"), BASE_URL)
+              .speak(i18n.t("NEED_REGISTER_NICKNAME"), baseDomain)
               .getResponse();
         }
         let eloMessage;
